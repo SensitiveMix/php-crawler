@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="MySQL - we_chat@localhost" uuid="8d27fe31-987c-404c-ab84-c43ef891d94c">
+      <secret-storage>master_key</secret-storage>
+      <user-name>root</user-name>
+      <schema-pattern>we_chat.*</schema-pattern>
+      <default-schemas>we_chat.*</default-schemas>
+    </data-source>
+    <data-source name="MySQL - wechat@localhost" uuid="92d508bd-2c19-4bc7-943e-37e9e5eb67a2">
+      <secret-storage>master_key</secret-storage>
+      <user-name>root</user-name>
+      <schema-pattern>wechat.*</schema-pattern>
+      <default-schemas>wechat.*</default-schemas>
+    </data-source>
+    <data-source name="MySQL - hello@localhost" uuid="2e29a41a-1a47-42c1-b6e1-496b2f7a85dd">
+      <secret-storage>master_key</secret-storage>
+      <user-name>root</user-name>
+      <schema-pattern>hello.*</schema-pattern>
+      <default-schemas>hello.*</default-schemas>
+    </data-source>
+  </component>
+</project>
