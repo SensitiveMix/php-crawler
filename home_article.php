@@ -14,7 +14,7 @@ include ("simple_html_dom.php");
     {
         die('Could not connect: ' . mysql_error());
     }
-    mysql_select_db("we_chat", $con);
+    mysql_select_db("weChat", $con);
     mysql_query("set names utf8;");
 
 // Create DOM from URL or file
@@ -50,21 +50,30 @@ foreach($html->find('div[class=newmk_list_new]') as $element){
             preg_match_all("/<div style=\"padding:10px;\".*?>.*?<\/div>/ism",$casts,$match);
             preg_match_all("/<div style=\" margin:0 10px; text-align:left; font-size:12px; color:#999999;\".*?>.*?<\/div>/ism",$casts,$match3);
 
-
+            $dom=str_get_html($casts);
+            $result = $dom->find('div[style=padding:10px;]');
             $detail_title=$match1[0][0];
             $detail_time=$match2[0][1];
-            $detail_content=$match[0][0];
             $detail_content_count=$match3[0][0];
 
+            preg_match_all("/\d+/",$detail_content_count,$match4);
 
-            echo $detail_content;
-            print_r($match);
-//        var_dump(count($detail_content));
+            $home_content_count=$match4[0][4];
+
+            echo $match4[0][4];
+//            print_r($match4);
+            foreach($result as $v) {
+                $detail_content= $v->innertext;
+//                echo $detail_content;
+
+                mysql_query("INSERT INTO homeArticle (postId,home_content,home_content_count,detail_title,detail_time,detail_content,detail_content_count)
+            VALUES ('$postId','$content','$home_content_count','$detail_title','$detail_time','$detail_content','$detail_content_count')");
+            }
+
+            $detail_content="";
+            $dom->clear();
 
 
-
-            mysql_query("INSERT INTO homeArticle (postId,home_content,detail_title,detail_time,detail_content,detail_content_count)
-        VALUES ('$postId','$content','$detail_title','$detail_time','$detail_content','$detail_content_count')");
     }
 
 
