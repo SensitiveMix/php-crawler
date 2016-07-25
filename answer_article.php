@@ -56,14 +56,15 @@ for($i=1;$i<=5;$i++) {
             $result = $dom->find('div[style=padding:10px;]');
             $detail_title = $match1[0][0];
             $detail_time = $match2[0][1];
+            $detail_content_count=$match3[0][0];
 
 
             foreach ($result as $v) {
                 $detail_content = $v->innertext;
                echo $detail_content;
 
-                mysql_query("INSERT INTO homeArticle (postId,home_content,detail_title,detail_time,detail_content)
-            VALUES ('$postId','$content','$detail_title','$detail_time','$detail_content')");
+                mysql_query("INSERT INTO homeArticle (postId,home_content,detail_title,detail_time,detail_content,detail_content_count)
+            VALUES ('$postId','$content','$detail_title','$detail_time','$detail_content','$detail_content_count')");
             }
 
             $detail_content = "";
