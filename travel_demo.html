@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+    <script src="http://malsup.github.io/jquery.blockUI.js"></script>
+    <script src="http://malsup.github.com/chili-1.7.pack.js"></script>
+    <script src="http://apps.bdimg.com/libs/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.css">
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css">
+</head>
+<body>
+<!--表单验证-->
+<div class="col-sm-12 lowest-fare-modal-response-errors lowestfareerrors_b811e8ca-2a8e-4847-8fe6-1c5cde23eee4" style="display: block;">
+    <h4 class="Lowest_Airfare_Errorsb811e8ca-2a8e-4847-8fe6-1c5cde23eee4 errors" style="display: none;">錯誤</h4>
+    <h4 class="Lowest_Airfare_Errorb811e8ca-2a8e-4847-8fe6-1c5cde23eee4 errors" style="">錯誤</h4>
+    <div class="OrginTextBox_validate_Required_b811e8ca-2a8e-4847-8fe6-1c5cde23eee4 errors" style="display: none;">需要填寫出發地</div>
+    <div class="OrginTextBox_validate_Error_b811e8ca-2a8e-4847-8fe6-1c5cde23eee4 errors" style="display:none">出發地必須是3字母機場代碼</div>
+    <div class="Destination_validate_Required_b811e8ca-2a8e-4847-8fe6-1c5cde23eee4 errors" style="display: none;">需要填寫目的地</div>
+    <div class="Destination_validate_Error_b811e8ca-2a8e-4847-8fe6-1c5cde23eee4 errors" style="display:none">目的地必須是3字母機場代碼</div>
+    <div class="Same_Text_validate_Error_b811e8ca-2a8e-4847-8fe6-1c5cde23eee4 errors" style="display:none">目的地必須不同於出發地</div>
+    <div class="Noflight_Error_b811e8ca-2a8e-4847-8fe6-1c5cde23eee4" style="">No flights found for SHA <span class="icon icon-arrows"></span> FLN</div>
+</div>
+<!--机票表单-->
+<form>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="lowest-fare-modal-origin form-group">
+                <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" class="form-control iataorgin ui-autocomplete-input" id="OrginTextBox_b811e8ca-2a8e-4847-8fe6-1c5cde23eee4" placeholder="出发地" value="" name="OrginTextBox" onkeyup="OnchangelowestairfareValidation('be6aa4a3-7ee4-4766-8225-33427812218b','OrginTextBox')" autocomplete="off">
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <div class="lowest-fare-modal-destination form-group">
+                <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" class="form-control ui-autocomplete-input" id="DestinationTextBox_b811e8ca-2a8e-4847-8fe6-1c5cde23eee4" placeholder="目的地" value="SJU" name="DestinationTextBox" onkeyup="OnchangelowestairfareValidation('be6aa4a3-7ee4-4766-8225-33427812218b','DestinationTextBox')" autocomplete="off">
+            </div>
+        </div>
+
+        <div class="col-xs-12 ">
+            <span class="mask"><a onclick="javascript:return SearchLowestAirFare('9-15-2016','9-19-2016','b811e8ca-2a8e-4847-8fe6-1c5cde23eee4');" class="btn btn-primary" href="javascript:void(0)">獲取價格</a></span>
+        </div>
+    </div>
+    <div class="row clearboth">
+        <div class="col-xs-12 lowest-fare-modal-disclaimer">*價格可能或會不同</div>
+    </div>
+</form>
+
+<!--显示结果-->
+<div class="results-lowest-fare">
+    <a data-target="#divLowestFare_b811e8ca-2a8e-4847-8fe6-1c5cde23eee4" onclick="javascript:return ShowLowestAirfaretest('784fe3ae-a409-4361-add2-783bed90d11a')" href="javascript:void(0)" class="link-lowest-fare">獲得最低機票 </a>
+</div>
+
+<div id="divResult_b811e8ca-2a8e-4847-8fe6-1c5cde23eee4" class="lowestFare"></div>
+
+<input type="text" onkeyup="geolocationAutocompleteforIATA">
+
+<script>
+    var proxy = new serviceProxy({
+        show: false
+    });
+    //获取出发地机场代码
+    function geolocationAutocompleteforIATA(a) {
+        var data=$('.iataorgin').val();
+        $.ajax({
+            url: "https://webservices.wvhservices.com/LocationService.svc/" + "GetAiportLocationJson",
+            dataType: "jsonp",
+            jsonp: "method",
+            data: {
+                term: data
+            },
+            success: function(d) {
+                $.map(d, function(f) {
+                    var e = formatAirportCode(f);
+                    console.log(e)
+                    return {
+                        label: e.replace("(GENERAL)", ""),
+                        value: f.AirportCode,
+                        location: f
+                    }
+                })
+            }
+        })
+    }
+    //格式化机场信息
+    function formatAirportCode(a) {
+        var b = "";
+        if (a.AirportName != null && a.AirportName != "") {
+            b = a.AirportName
+        }
+        if (a.Destination != null && a.Destination != "") {
+            if (b.toLowerCase().indexOf(a.Destination.toLowerCase()) < 0) {
+                b = a.Destination + " " + b
+            }
+        }
+        if (a.StateName != null && a.StateName != "") {
+            b += ", " + a.StateName
+        }
+        if (a.CountryName != null && a.CountryName != "") {
+            b += ", " + a.CountryName
+        }
+        b += " (" + a.AirportCode + ")";
+        return b
+    }
+
+    function OnchangelowestairfareValidation(f, a, d) {
+//        e='b811e8ca-2a8e-4847-8fe6-1c5cde23eee4';
+//        $(".OrginTextBox_validate_Error_" + e).hide();
+//        $(".Destination_validate_Error_" + e).hide();
+//        $(".Lowest_Airfare_Errors" + e).show();
+//        $(".Lowest_Airfare_Error" + e).hide();
+//        var e = f.replace(/OrginTextBox_/gi, "");
+//        e = e.replace(/DestinationTextBox_/gi, "");
+//        if (d == "true") {
+//            var g = $("#OrginTextBox_ConfirmPage").val();
+//            var b = $("#DestinationTextBox_ConfirmPage").val()
+//        } else {
+//            var g = $("#OrginTextBox_" + e).val();
+//            var b = $("#DestinationTextBox_" + e).val()
+//        }
+//        var c = 0,
+//                h = 0;
+//        if (a == "OrginTextBox") {
+//            $(".OrginTextBox_validate_Required_" + e).hide();
+//            $(".OrginTextBox_validate_Error_" + e).hide();
+//            $(".Same_Text_validate_Error_" + e).hide();
+//            if (g.length != 0) {
+//                originerror = 0;
+//                $(".OrginTextBox_validate_Required_" + e).hide()
+//            } else {
+//                $(".lowestfareerrors_" + e).show();
+//                originerror = 1;
+//                c = 1;
+//                destinationerror = 1;
+//                $(".OrginTextBox_validate_Required_" + e).show();
+//                $(".Destination_validate_Required_" + e).show()
+//            }
+//        } else {
+//            if (a == "DestinationTextBox") {
+//                $(".Destination_validate_Required_" + e).hide();
+//                $(".Destination_validate_Error_" + e).hide();
+//                $(".Same_Text_validate_Error_" + e).hide();
+//                if (b.length != 0) {
+//                    destinationerror = 0;
+//                    $(".Destination_validate_Required_" + e).hide()
+//                } else {
+//                    $(".lowestfareerrors_" + e).show();
+//                    destinationerror = 1;
+//                    h = 1;
+//                    $(".Destination_validate_Required_" + e).show();
+//                    originerror = 1;
+//                    $(".OrginTextBox_validate_Required_" + e).show()
+//                }
+//            }
+//        }
+//        if (b.toLowerCase() != g.toLowerCase()) {
+//            sametexterror = 0;
+//            $(".Same_Text_validate_Error_" + e).hide()
+//        } else {
+//            $(".lowestfareerrors_" + e).show();
+//            if (b.length != 0) {
+//                sametexterror = 1;
+//                $(".Lowest_Airfare_Errors" + e).hide();
+//                $(".Lowest_Airfare_Error" + e).show();
+//                $(".Same_Text_validate_Error_" + e).show()
+//            }
+//        }
+//        if (g.length > 0 && b.length == 0) {
+//            $(".OrginTextBox_validate_Required_" + e).hide()
+//        }
+//        if (b.length > 0 && g.length == 0) {
+//            $(".Destination_validate_Required_" + e).hide()
+//        }
+//        if ((g.length != 0 && g.length == 3) && (b.length == 0 || b.length != 3) || (b.length != 0 && b.length == 3) && (g.length == 0 || g.length != 3)) {
+//            $(".Lowest_Airfare_Errors" + e).hide();
+//            $(".Lowest_Airfare_Error" + e).show()
+//        }
+//        if (g.length != 3 && b.length != 3) {
+//            $(".Lowest_Airfare_Errors" + e).show();
+//            $(".Lowest_Airfare_Error" + e).hide()
+//        }
+//        if (g.length == 3 && b.length == 3) {
+//            $(".lowestfareerrors_" + e).hide()
+//        }
+//        if (originerror == 1 || destinationerror == 1 || sametexterror == 1) {
+//            $(".lowestfareerrors_" + e).show();
+//            return false
+//        } else {
+//            return true
+//        }
+
+
+        geolocationAutocompleteforIATA("geolocationAutocompleteforIATA")
+    }
+
+//    获取价格
+    function SearchLowestAirFare(c, e, d) {
+
+        $(".Noflight_Error_"+d).hide();
+        var f = $("#OrginTextBox_" + d).val();
+        var a = $("#DestinationTextBox_" + d).val();
+        ShowProgresscart();
+        var b = "Orgin=" + f + "&Destination=" + a + "&StartDate=" + c + "&EndDate=" + e;
+        proxy.invoke("/Package/GetLowestAirFare", "POST", b, function(g) {
+            $.unblockUI();
+            if (g != null) {
+                if (g.Price == "0" || g.Airline == null) {
+                    $(".lowestfareerrors_" + d).show();
+                    $(".Noflight_Error_" + d).show();
+                    $(".Noflight_Error_" + d).html("No flights found for " + f + ' <span class="icon icon-arrows"></span> ' + a);
+                    return
+                } else {
+                    $("#divLowestFare_" + d).hide();
+                    $("#divResult_" + d).html("");
+                    $("#divResult_" + d).html(f + ' <i class="icon icon-arrows"></i> ' + a + " : <b>" + g.Price + '</b><span style="display:block"> on ' + g.Airline + "</span>");
+                    $("#divResult_" + d).parent().children(".results-lowest-fare").hide()
+                }
+            }
+        })
+    }
+
+    //  加载框
+    function ShowProgresscart() {
+        var a = new Image();
+        a.src = "";
+        $.blockUI({
+            message: '<h1><i class="fa fa-cog fa-spin"></i> ' + 'JustaMoment' + "</h1>",
+            showOverlay: true
+        })
+    }
+</script>
+</body>
+</html>

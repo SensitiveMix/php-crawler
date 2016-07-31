@@ -31,5 +31,11 @@
       <schema-pattern>chat.*</schema-pattern>
       <default-schemas>chat.*</default-schemas>
     </data-source>
+    <data-source name="MySQL - travel@localhost" uuid="b827e79b-24a4-4174-9e40-4abbaac337fd">
+      <secret-storage>master_key</secret-storage>
+      <user-name>root</user-name>
+      <schema-pattern>travel.*</schema-pattern>
+      <default-schemas>travel.*</default-schemas>
+    </data-source>
   </component>
 </project>

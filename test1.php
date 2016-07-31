@@ -15,7 +15,8 @@ curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 $query = curl_exec($ch);
 $out= mb_convert_encoding($query, 'utf-8', 'GBK,UTF-8,ASCII');
 
-echo $out;
+preg_match_all("/<div class=\"resultsItem\".*?>.*?<\/div>/ism", $out, $match1);
+print_r($match1);
 curl_close($ch);
 
 

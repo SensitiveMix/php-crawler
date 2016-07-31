@@ -9,17 +9,18 @@ header('Access-Control-Allow-Origin: *');
 $aContext = array(
     'http' => array(
         'method' => 'POST',
-        'header' =>"Referer:http://www.wvmp360.com/lytc.asp?uid=18913590691&brand="
+        'header' =>"Referer:http://www.wvmp360.com/lytc.asp?uid=18913590691&keys="
     ),
 );
 ini_set('user_agent','Mozilla/4.0 (compatible; MSIE 5.00; Windows 98)');
 
 $cxContext = stream_context_create($aContext);
 
-$cont = file_get_contents('http://www.wvmp360.com/lytc_lx.asp?'.urlencode('cid=0&keys=&uid=18913590691&oid=0&tid=0&zid='), False, $cxContext);
+$cont = file_get_contents('http://www.wvmp360.com/lytc_lx.asp?cid=0&keys=&uid=18913590691&oid=0&tid=0&zid=0',FALSE,$cxContext);
 
-echo $cont;
+//echo $cont;
 
+var_dump($cont);
 
 
 //$aContext = array(
