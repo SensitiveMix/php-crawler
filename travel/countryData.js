@@ -279,6 +279,5 @@ var countryData=[{
     'TAICHUNG':'TXG',
     'HONG KONG':'HKG',
     'LANZHOU':'LHW',
-    'NANCHANG':'KHN'
-
+    'NANCHANG':'KHN '
 }]

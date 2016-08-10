@@ -37,6 +37,14 @@ function testAction($Orgin,$Des,$StartDate,$EndDate){
     $res = request_post($url, $post_data);
     echo $res;
 }
+
+/**
+ * 第一个参数 起始地点机场代码
+ * 第二个参数 终点机场代码
+ * 第三个参数 机票起始时间
+ * 第四个参数 机票终止时间
+ *
+ */
 testAction('SHA','TYS','9-1-2016','9-30-2016');
 
 
