@@ -33,7 +33,7 @@ function request_post($url = '', $param = '') {
 function testAction(){
     $url = 'http://www.wvmp360.com/lytc_lx.asp?cid=0&keys=&uid=&oid=0&tid=0&zid=0';
     $post_data['last']       = '0';
-    $post_data['amount']      = '16';
+    $post_data['amount']      = '300';
     $o = "";
     foreach ( $post_data as $k => $v )
     {
