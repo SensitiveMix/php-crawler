@@ -20,4 +20,7 @@ $data = curl_exec($ch);//运行curl
 curl_close($ch);
 $dataEncode = mb_convert_encoding($data, 'utf-8', 'GBK,UTF-8,ASCII');
 
-echo $data;
+
+$callback = $_GET['callback'];
+echo $callback . '(' . json_encode($data) . ')';
+//echo $data;
