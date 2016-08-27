@@ -34,6 +34,7 @@ function translate($query, $from, $to)
     $args['sign'] = buildSign($query, APP_ID, $args['salt'], SEC_KEY);
     $ret = call(URL, $args);
     $ret = json_decode($ret, true);
+    print_r($ret) ;
     return $ret; 
 }
 
@@ -127,4 +128,27 @@ function convert(&$args)
     }
     return $args;
 }/*}}}*/
+
+
+
+translate('apple','en','en');
+
+/**
+ * 调用的范例
+ * 在输入起始地点时直接调用translate(x,y,z)
+ * x  待查询的字符串
+ * y  起始语言
+ * z  目标语言
+ * $query
+ * 传入的字符串 必须要判断它的语言,根据待查询的语言设置y
+ * 文档:http://api.fanyi.baidu.com/api/trans/product/apidoc
+ *
+ */
+$allen = preg_match("/^[^/x80-/xff]+$/", $query);   //判断是否是英文
+//$allcn = preg_match("/^[".chr(0xa1)."-".chr(0xff)."]+$/",$s);  //判断是否是中文
+if(!$allen){
+    translate('apple','en','en');   //例子  en代表英文
+}else{
+    translate('苹果','zh','en');     //例子  zh代表中文
+}
 

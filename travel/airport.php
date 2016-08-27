@@ -5,22 +5,17 @@
  * Date: 16/7/30
  * Time: 下午2:07
  */
-$url = "https://webservices.wvhservices.com/LocationService.svc/GetAiportLocationJson?method=jQuery19107593850123613375_1469858596712&term=shang";
+$url = "https://webservices.wvhservices.com/LocationService.svc/GetAiportLocationJson?method=jQuery19107593850123613375_1469858596712&term=beijing";
 
 $postUrl = $url;
-
 $ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $postUrl);
-curl_setopt($ch, CURLOPT_ENCODING, "gzip");
+curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,0);
 curl_setopt($ch, CURLOPT_HEADER, 0);
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-//    curl_setopt($ch, CURLOPT_POSTFIELDS, $curlPost);
-$data = curl_exec($ch);//运行curl
+$output = curl_exec($ch);
 curl_close($ch);
-$dataEncode = mb_convert_encoding($data, 'utf-8', 'GBK,UTF-8,ASCII');
 
 
-$callback = $_GET['callback'];
-echo $callback . '(' . json_encode($data) . ')';
-//echo $data;
+echo $output;

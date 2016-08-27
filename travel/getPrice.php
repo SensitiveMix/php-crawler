@@ -45,6 +45,6 @@ function testAction($Orgin,$Des,$StartDate,$EndDate){
  * 第四个参数 机票终止时间
  *
  */
-testAction('SHA','TYS','9-1-2016','9-30-2016');
+testAction('SHA','BJS','11-28-2016','12-1-2016');
 
 
