@@ -7,6 +7,7 @@ function request_post($url = '', $param = '') {
 
     $postUrl = $url;
     $curlPost = $param;
+    $curlPost = $param;
     $ch = curl_init();//初始化curl
     curl_setopt($ch, CURLOPT_URL,$postUrl);//抓取指定网页
     curl_setopt($ch, CURLOPT_HEADER, 0);//设置header
